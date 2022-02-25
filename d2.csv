@@ -1,2 +1,2 @@
-,Price,Destination
-0,1.1,1.1
+,Price,Cab_type,Pickup,Destination
+0,$10.90,UberX,"Chapel Hill, NC, USA","Governor's Drive, NC, USA"

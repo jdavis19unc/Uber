@@ -4,6 +4,7 @@ from selenium.webdriver.common.keys import Keys
 import time
 import pandas as pd
 
+
 op = webdriver.ChromeOptions()
 op.add_argument("--start-maximized")
 
@@ -23,10 +24,12 @@ def enter(element: str, inp: str):
     time.sleep(2)
     x.send_keys(Keys.RETURN)
 
-enter("pickup", "Chapel Hill, NC, USA")
-y = driver.find_element_by_name("destination")
 
-enter("destination", "Governor's Drive, NC, USA")
+pickup = "Chapel Hill, NC, USA"
+enter("pickup", pickup)
+y = driver.find_element_by_name("destination")
+destination = "Governor's Drive, NC, USA"
+enter("destination", destination)
 
 time.sleep(5)
 #z = driver.find_elements_by_class_name("text-area bv d9 bw fa bn bo v9 nh ru")
@@ -34,10 +37,16 @@ time.sleep(5)
 x = driver.find_element_by_xpath('//*[@id="main"]/section[2]/div/div[2]/div/div/div[1]/div/div[3]/div[2]/div[2]/div[1]')
 #/html/body/div[1]/div/div/div[1]/main/section[2]/div/div[2]/div/div/div[1]/div/div[3]/div[2]/div[2]/div[1]
 print("!!!!!!!!!!!!!!!!!!")
-print(x.get_attribute("title"))
+price = x.get_attribute("title")
+print(price)
 print("2")
 
-Cov = pd.read_csv("data.csv", 
-                  sep='\t', 
-                  header=None)
-Cov.columns = ["Sequence", "Start", "End", "Coverage"]
+
+d = pd.read_csv("data.csv", index_col=False, header=0)
+d = pd.DataFrame(d)
+print(d)
+test = {"Price": price, "Cab_type": "UberX", "Pickup": pickup, "Destination": destination }
+d = d.append(test, ignore_index=True)
+print(d)
+
+d.to_csv("d2.csv")
