@@ -1,8 +1,13 @@
+from email.quoprimime import header_check
 from selenium import webdriver
 from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.common.keys import Keys
 import time
+from datetime import date, datetime
 import pandas as pd
+
+now = datetime.now()
+
 
 
 op = webdriver.ChromeOptions()
@@ -16,6 +21,8 @@ driver = webdriver.Chrome(service=ser, options = op)
 
 
 driver.get("https://www.uber.com/global/en/price-estimate/")
+
+time.sleep(3)
 
 def enter(element: str, inp: str):
     x = driver.find_element_by_name(element)
@@ -41,12 +48,23 @@ price = x.get_attribute("title")
 print(price)
 print("2")
 
+# GET TIME
+current_time = now.strftime("%H:%M:%S")
+print("Current Time =", current_time)
 
-d = pd.read_csv("data.csv", index_col=False, header=0)
-d = pd.DataFrame(d)
-print(d)
-test = {"Price": price, "Cab_type": "UberX", "Pickup": pickup, "Destination": destination }
+today = date.today()
+
+# dd/mm/YY
+d1 = today.strftime("%d/%m/%Y")
+
+
+
+#d = pd.read_csv("data.csv", index_col=False, header=0)
+d = pd.DataFrame()
+test = {"Price": price, "Cab_type": "UberX", "Pickup": pickup, "Destination": destination, "Time": current_time, "Date": d1 }
 d = d.append(test, ignore_index=True)
-print(d)
+d.to_csv('d2.csv', mode='a', header=False)
 
-d.to_csv("d2.csv")
+t = pd.read_csv("d2.csv")
+
+print(t)

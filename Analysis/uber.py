@@ -3,8 +3,11 @@ import pandas as pd
 import os
 from typing import Union
 import datetime
+from sklearn.model_selection import train_test_split
+from sklearn.linear_model import LinearRegression
 
-data_file = pd.read_csv('cab_rides.csv')
+data_file = pd.read_csv('Data\cab_rides.csv')
+print("yes")
 
 def getdict(column: str):
     data = data_file[str(column)]
@@ -23,7 +26,7 @@ def isolate_data(column: str, value: str):
     return data_2
 
 
-isolated_data = isolate_data('cab_type', 'Uber')
+isolated_data = isolate_data('name', 'WAV')
 
 isolated_data_2 = isolate_data('name', 'UberX')
 s = []
@@ -33,10 +36,34 @@ for i in isolated_data_2['time_stamp']:
     date_time = datetime.datetime.fromtimestamp(i / 1000)   
     s.append(date_time)
 
-isolated_data_2['Dates'] = s
+#isolated_data_2['Dates'] = s
 
 
 
-isolated_data_2.to_csv("Curated_Uber2.csv")
 
-print(isolated_data_2)
+new = isolated_data["destination"]
+
+states=pd.get_dummies(new,drop_first=True)
+#print(states)
+
+isolated_data = isolated_data.drop("destination", axis=1)
+#print(data_file)
+
+
+x=pd.concat([isolated_data,states],axis=1)
+
+
+x.to_csv('test.csv')
+
+
+
+
+
+
+
+
+
+
+#isolated_data_2.to_csv("Curated_Uber2.csv")
+
+#print(isolated_data_2)
