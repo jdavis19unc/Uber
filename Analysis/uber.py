@@ -9,6 +9,8 @@ from sklearn.linear_model import LinearRegression
 data_file = pd.read_csv('Data\cab_rides.csv')
 print("yes")
 
+
+
 def getdict(column: str):
     data = data_file[str(column)]
     dictionary = {}
@@ -26,34 +28,40 @@ def isolate_data(column: str, value: str):
     return data_2
 
 
-isolated_data = isolate_data('name', 'WAV')
 
-isolated_data_2 = isolate_data('name', 'UberX')
-s = []
-for i in isolated_data_2['time_stamp']:
-    epoch_time = i
-   
-    date_time = datetime.datetime.fromtimestamp(i / 1000)   
-    s.append(date_time)
+isolated_data = isolate_data('name', 'UberXL')
 
-#isolated_data_2['Dates'] = s
-
-
+arr = []
+s = ""
+d = ""
+dfNew = isolated_data.copy()
+for index, row in isolated_data.iterrows():
+    s = row['source']
+    d = row['destination']
+    arr.append(s + ", " + d )
 
 
-new = isolated_data["destination"]
+
+
+dfNew["pair"] = arr
+print(dfNew)
+
+
+
+new = dfNew["pair"]
+
 
 states=pd.get_dummies(new,drop_first=True)
 #print(states)
 
-isolated_data = isolated_data.drop("destination", axis=1)
+isolated_data = dfNew.drop("pair", axis=1)
 #print(data_file)
 
 
-x=pd.concat([isolated_data,states],axis=1)
+x=pd.concat([dfNew,states],axis=1)
 
 
-x.to_csv('test.csv')
+x.to_csv('UberXL_Pairs.csv')
 
 
 
