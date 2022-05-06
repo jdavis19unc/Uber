@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 import pandas as pd
 import statsmodels.api as sm
 
-data = pd.read_csv('UberXl_Pairs.csv', index_col=False, header=0)
+data = pd.read_csv('UberX_Pairs.csv', index_col=False, header=0)
 data = data.dropna()
 
 
